@@ -40,6 +40,7 @@ var row = create3("div","class","row");
 var col = create3("div","class","col-md-4");
 var left = create3("div","class","left");
 var p = create2("h1","Form Submission:");
+
 //form 
 var forms = create3("form","id","form");
 
@@ -117,7 +118,7 @@ var inputc = create5("input","type","text","id","country","placeholder","Country
 var bc1 = create1("br");
 
 //button
-var button = create5("button","type","button","id","submit","onclick","order()");
+var button = create5("button","type","button","id","submit","onclick","check()");
 button.innerHTML = "Submit";
 
 //table
@@ -150,56 +151,87 @@ row.append(col,col1);
 container.append(row);
 document.body.append(container);
 
-//Javascript code
+// Variable Declaration to store form field values
+var fname, lname, gender, foods, address, pin, state, country;
+
+// Function to get form field values
 function order(){
 
-    //getvalues 
-    var fname = document.getElementById("first-name").value;
-    var lname = document.getElementById("last-name").value;
-    var gender = document.querySelector(`input[name="gender"]:checked`).value;
-    var foods = food();
-    var address = document.getElementById("address").value;
-    var pin = document.getElementById("pincode").value;
-    var state = document.getElementById("state").value;
-    var country = document.getElementById("country").value;
+    fname = document.getElementById("first-name").value;
+    lname = document.getElementById("last-name").value;
+    gender = document.querySelector(`input[name="gender"]:checked`);
+    foods = food();
+    address = document.getElementById("address").value;
+    pin = document.getElementById("pincode").value;
+    state = document.getElementById("state").value;
+    country = document.getElementById("country").value; 
 
-    //post on table
-    var tr = document.createElement("tr");
-    var td1 = tr.appendChild(document.createElement("td"));
-    var td2 = tr.appendChild(document.createElement("td"));
-    var td3 = tr.appendChild(document.createElement("td"));
-    var td4 = tr.appendChild(document.createElement("td"));
-    var td5 = tr.appendChild(document.createElement("td"));
-    var td6 = tr.appendChild(document.createElement("td"));
-    var td7 = tr.appendChild(document.createElement("td"));
-    var td8 = tr.appendChild(document.createElement("td"));
-    td1.innerHTML = fname;
-    td2.innerHTML = lname;
-    td3.innerHTML = gender;
-    td4.innerHTML = foods;
-    td5.innerHTML = address;
-    td6.innerHTML = pin;
-    td7.innerHTML = state;
-    td8.innerHTML = country;
-    document.getElementById("tb").appendChild(tr);
-    var my_form = document.getElementById("form");
-    my_form.reset(); 
+    // Function to get selected checkbox values
+    function food(){
+        var temp=[];    
+        var food1 = document.getElementsByName("food");
+        for (var i = 0; i < food1.length; i++) {
+            if (food1[i].checked){
+                temp.push(food1[i].value);
+            }
+        }    
+        if(temp.length>=2){
+            return temp.join(" ");     
+        }
+        else{
+            alert("Select minimum 2 food choices");
+            return "";       
+        }
+    }
+}
+    
+//function to post field datas to the table
+function temp_database(){
 
+    // Check if all fields are filled
+    if (
+            fname === "" ||
+            lname === "" ||
+            gender === null ||
+            foods === "" ||
+            address === "" ||
+            pin === "" ||
+            state === "" ||
+            country === ""
+        ) {
+        alert("Kindly fill all the fields");
+    }
+    else {
+    
+        // Add data to the table
+        var tr = document.createElement("tr");
+        var td1 = tr.appendChild(document.createElement("td"));
+        var td2 = tr.appendChild(document.createElement("td"));
+        var td3 = tr.appendChild(document.createElement("td"));
+        var td4 = tr.appendChild(document.createElement("td"));
+        var td5 = tr.appendChild(document.createElement("td"));
+        var td6 = tr.appendChild(document.createElement("td"));
+        var td7 = tr.appendChild(document.createElement("td"));
+        var td8 = tr.appendChild(document.createElement("td"));
+        td1.innerHTML = fname;
+        td2.innerHTML = lname;
+        td3.innerHTML = gender.value;
+        td4.innerHTML = foods;
+        td5.innerHTML = address;
+        td6.innerHTML = pin;
+        td7.innerHTML = state;
+        td8.innerHTML = country;
+        document.getElementById("tb").appendChild(tr);
+        var my_form = document.getElementById("form");
+        my_form.reset(); 
+    }
 }
 
-//get selected checkbox value
-function food(){
-    var temp=[];    
-var food1 = document.getElementsByName("food");
-for (var i = 0; i < food1.length; i++) {
-    if (food1[i].checked){
-        temp.push(food1[i].value);
-     }
-}    
-if(temp.length>=2){
-    return temp.join(" ");     
-}else{
-    alert("select minimum 2");    
+// Function for form validation
+function check(){
+    
+    order(); // Call order() to get form field values
+    
+    temp_database(); // Call temp_databse() to add data to the table
     
 }
-};
