@@ -174,17 +174,12 @@ function order(){
             if (food1[i].checked){
                 temp.push(food1[i].value);
             }
-        }    
-        if(temp.length>=2){
-            return temp.join(" ");     
         }
-        else{
-            alert("Select minimum 2 food choices");
-            return "";       
-        }
+        return temp;  
+        
     }
 }
-    
+
 //function to post field datas to the table
 function temp_database(){
 
@@ -193,13 +188,20 @@ function temp_database(){
             fname === "" ||
             lname === "" ||
             gender === null ||
-            foods === "" ||
+            foods.length < 2 ||
             address === "" ||
             pin === "" ||
             state === "" ||
             country === ""
         ) {
-        alert("Kindly fill all the fields");
+        var errorMessage = "";
+        if (fname === "" || lname === "" || gender === null || address === "" || pin === "" || state === "" || country === "") {
+            errorMessage = "Kindly fill all the fields";
+          }
+          if (foods.length < 2) {
+            errorMessage += (errorMessage !== "" ? "\n" : "") + "Select minimum 2 food choices";
+          }
+          alert(errorMessage);    
     }
     else {
     
@@ -216,7 +218,7 @@ function temp_database(){
         td1.innerHTML = fname;
         td2.innerHTML = lname;
         td3.innerHTML = gender.value;
-        td4.innerHTML = foods;
+        td4.innerHTML = foods.join(" ");
         td5.innerHTML = address;
         td6.innerHTML = pin;
         td7.innerHTML = state;
